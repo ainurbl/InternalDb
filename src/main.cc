@@ -1,6 +1,9 @@
 #include <cstdio>
 #include <map>
 #include <functional>
+#include <cassert>
+#include <fstream>
+#include <iostream>
 
 #include "lexer.h"
 #include "parser.h"
@@ -57,35 +60,59 @@ void printQueryReport(const Query &query) {
     printer.at(query.operation)();
 }
 
-int main() {
+void mainInteractive() {
     while (true) {
         printf("sql>");
         fflush(stdout);
         fflush(stdin);
         char input[1024];
-
         if (!fgets(input, sizeof(input), stdin)) {
             break;
         }
-
         if (input[0] == '\n') {
             continue;
         }
-
         YY_BUFFER_STATE state;
-
         if (!(state = yy_scan_bytes(input, strcspn(input, "\n")))) {
             continue;
         }
-
         Query ret;
-
         if (yyparse(&ret) == 0) {
             printQueryReport(ret);
         }
-
         yy_delete_buffer(state);
     }
+}
 
+void mainFile(const std::string& path) {
+    std::ifstream in(path);
+    std::string query;
+    while (std::getline(in, query)) {
+        std::cout << "Initial query:\n" << query << std::endl;
+        YY_BUFFER_STATE state;
+        if (!(state = yy_scan_bytes(query.c_str(), strcspn(query.c_str(), "\n")))) {
+            continue;
+        }
+        Query ret;
+        std::cout << "======================\n" << std::endl;
+        if (yyparse(&ret) == 0) {
+            printQueryReport(ret);
+        }
+        yy_delete_buffer(state);
+    }
+}
+
+// format is:
+// ./main - interactive mode
+// ./main <PATH>
+int main(int argc, char **argv) {
+    if (argc != 1) {
+        assert(argc == 2);
+    }
+    if (argc == 1) {
+        mainInteractive();
+    } else {
+        mainFile(argv[1]);
+    }
     return 0;
 }
