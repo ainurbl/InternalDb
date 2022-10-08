@@ -1,0 +1,11 @@
+Create Table myNewTable (  col1 INt, col2 Real, col3 TexT, col4 CHar(7), col5 Varchar(3), col6 BoolEan)  ;
+
+Insert IntO myNewTable VALuES (   42,      3.14, 'striGnd', 'striGnd')  ;
+
+Select * From myNewTable WHEre 2 + 2 == 4 AND TRUE OR FALSE OR (FALSE) AND NOT FALSE  ;
+Select (col1 * col2 + 56) / 3 - 7, col1 * col2 - (col3) From myNewTable WHEre 2 + 2 == 4 AND TRUE OR FALSE OR (FALSE) AND NOT FALSE  ;
+
+Update Mytable Set col1 = 1 * 'test', col2 = 'test' - 'ta' + 3.14 WHERE (2 + 2 == 4 AND TRUE OR FALSE OR (FALSE) AND NOT FALSE) AND (3.14 == ('abc' + 'bcf'));
+
+DELETE FROM myNewTable WHEre (2 + 2 == 4 AND TRUE OR FALSE OR (FALSE) AND NOT FALSE) AND (3.14 == ('abc' + 'bcf'));
+DELETE FROM myNewTable;
